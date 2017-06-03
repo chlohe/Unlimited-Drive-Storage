@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>    
+    Welcome to Unlimited Drive Storage.<br />
+    
+     <label>Folder Name</label>
+     <input type="text" id="folderName">
+     
+     <button onclick="submit();">Install</button>
+    
+    <script>
+     function submit() {
+      var folderName = document.getElementById("folderName").value;
+      alert(folderName);
+      
+      google.script.run.initialSetup(folderName);
+     }
+    </script>
+  </body>
+</html>
+
+
