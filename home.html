@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <?!= include("style.css"); ?>
+  </head>
+  <body>
+  <?!= include("filepicker.js"); ?>
+  
+  
+    <div class="container">
+     <h3>Upload</h3>
+     <p>Either upload a new file or process an exisiting one</p>
+      <input id="file" type="file"  multiple />
+      <button id="uploadButton" onclick="submitForm(); return false">Upload</button>
+      <svg class='spinner' width='40px' height='40px' viewBox='0 0 66 66' xmlns='http://www.w3.org/2000/svg'><circle class='path' fill='none' stroke-width='6' stroke-linecap='round' cx='33' cy='33' r='30'></circle></svg>
+      <hr />
+      <button onclick="createPicker(true)">Import from drive</button>
+    </div>
+  
+    <div class="container">
+    <h3>Your Files</h3>
+    <table style="width:100%" id="files-table">
+    <thead>
+    
+  <tr>
+    <th>Filename</th>
+    <th>ID</th>
+    <th>Type</th>
+    <th>Download</th>
+  </tr>
+  </thead>
+    <tbody>
+    <?
+       var udsDatabaseName = "udsDatabase";
+       var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the Idatabase iD
+  
+       file = files.next(); 
+  
+       var data = SpreadsheetApp.openById(file.getId()).getActiveSheet().getDataRange().getValues();
+  
+           for (var i = 1; i < data.length; i++) {
+       ?>
+    <tr class="clickable-row">
+    <td> <?= data[i][0] ?> </td>
+    <td> <?= data[i][1] ?> </td>
+    <td> <?= data[i][2] ?> </td>
+    <td> <a class="button button-download" data-file-id="<?= data[i][1] ?>" data-content-type="<?= data[i][2] ?>" data-file-name="<?= data[i][0] ?>" data-row-id="<?= i ?>"><i class="fa fa-cloud"></i> Download</a> </td>
+    </tr>
+    <? } ?>
+    
+  </tbody>
+</table>
+    
+    </div>
+    
+        <div id="result"></div>
+    
+    <?!= include("scripts"); ?>
+    
+   
+  </body>
+</html>
+
+

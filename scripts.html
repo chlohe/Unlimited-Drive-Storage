@@ -1,0 +1,89 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+
+<script>
+//DataTable Initialisation
+$(document).ready(function(){
+    $('#files-table').DataTable();
+});
+
+google.script.run.withSuccessHandler(updateFiles).getDatabase();
+function updateFiles(udsDatabase){
+  var table = $('#files-table').DataTable();
+  table.clear();
+  for (var i = 1; i < udsDatabase.length; i++){
+    //this should work as long as no one screws with the ordering. Use this if things go wrong: https://datatables.net/reference/type/row-selector
+    var downloadButtonCode = '<a class="button button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-row-id="' + i + '"><i class="fa fa-cloud"></i> Download</a> '
+    table.row.add ([udsDatabase[i][0], udsDatabase[i][1],udsDatabase[i][2],downloadButtonCode]);
+  }
+  table.draw();
+   $(".button-download").click(function() {
+    var fileID = $(this).data("file-id");
+    var filename = $(this).data("file-name");;
+    var contentType = $(this).data("content-type");;
+   
+    google.script.run.withSuccessHandler(reassembleSuccess).withUserObject(filename, contentType).reassemble(fileID);
+  });
+  
+  //Make sure everythings the right colour
+
+}
+
+
+// UPLOAD
+
+ var file, 
+      reader = new FileReader();
+
+  // Upload the file to Google Drive
+  reader.onloadend = function(e) {
+   google.script.run
+      .withSuccessHandler(uploadSuccess)
+      .upload(
+         e.target.result, file.name, 
+      );
+  };
+
+  // Read the file on form submit
+  function submitForm() {
+    var filesPicked = $('#file')[0].files;
+    //Make sure that something is indeed selected
+    if (filesPicked.length != 0){
+       $("#uploadButton").hide();
+       $(".spinner").css("display", "inline-block");
+       alert(filesPicked[0].size);
+       file = filesPicked[0];
+       reader.readAsDataURL(file);
+    }
+    else
+    {
+       alert("You haven't selected anything");
+    }
+  }
+  
+  function uploadSuccess() {
+   alert("success");
+   $(".spinner").css("display", "none");
+   $("#uploadButton").show();
+   google.script.run.withSuccessHandler(updateFiles).getDatabase();
+  }
+  
+
+
+  
+  function reassembleSuccess(input, filename, contentType) {
+   download(input, filename, contentType)
+  }
+  
+  
+
+
+  
+  
+  
+  
+</script>
