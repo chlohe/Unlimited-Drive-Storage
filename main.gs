@@ -67,15 +67,29 @@ function upload(data, file) {
         blob = Utilities.newBlob(bytes, contentType, file),
         file = folder.createFile(blob);*/
     
-    var document = DocumentApp.create(file);
-    var text = document.getBody().editAsText();
-    text.insertText(0, data);
-    var documentId = document.getId();
-    var documentApp = DriveApp.getFileById(documentId);
-    folder.addFile(documentApp);
-    DriveApp.removeFile(documentApp);
+    var subFolder = folder.createFolder(file);
+    var subfolderID = subFolder.getId();
     
-    updateDatabase(file, documentId, contentType);
+    var maxCharacters = 1000000;
+    var numberOfDocs = Math.ceil(data.length / maxCharacters);
+    
+    var dataArray = new Array();
+    for (var i = 0; i < numberOfDocs; i ++) {
+      dataArray.push(data.substring(i * maxCharacters, (i + 1) * maxCharacters));
+    }
+    
+    //DocumentApp.create("log").getBody().editAsText().insertText(0, dataArray[0]);
+    for (i = 0; i < numberOfDocs; i++) { 
+      var document = DocumentApp.create(i);
+      var text = document.getBody().editAsText();
+      text.insertText(0, dataArray[i]);
+      var documentId = document.getId();
+      var documentApp = DriveApp.getFileById(documentId);
+      subFolder.addFile(documentApp);
+      DriveApp.removeFile(documentApp);
+    }
+    
+    updateDatabase(file, subfolderID, contentType, numberOfDocs);
     
     return "Success";
     
@@ -97,7 +111,7 @@ function importFile(fileID) {
 
 // Manage Database
 
-function updateDatabase(filename, id, contenttype) {
+function updateDatabase(filename, id, contenttype, numberofdocs) {
   
   var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
   
@@ -108,17 +122,22 @@ function updateDatabase(filename, id, contenttype) {
     return "";
   }
   
-  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([filename, id, contenttype]);
+  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([filename, id, contenttype, numberofdocs]);
 }
 
 // Rebuild a file from base64
 
-function reassemble(fileID) {
+function reassemble(subfolderID, numberOfDocs) {
   
   // Reassemble should work for any time of file stored inside the database.
+  var folder = DriveApp.getFolderById(subfolderID);
+  var fileText = "";
   
-  var file = DocumentApp.openById(fileID);
-  var fileText = file.getBody().getText();
-    
+  //Stitch all the parts back together
+  for (var i = 0; i < numberOfDocs; i++){
+    var partId = folder.getFilesByName(i).next().getId();
+    fileText += DocumentApp.openById(partId).getBody().getText();
+  }
+  
   return fileText;
 }

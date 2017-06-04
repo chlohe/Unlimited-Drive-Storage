@@ -17,16 +17,16 @@ function updateFiles(udsDatabase){
   table.clear();
   for (var i = 1; i < udsDatabase.length; i++){
     //this should work as long as no one screws with the ordering. Use this if things go wrong: https://datatables.net/reference/type/row-selector
-    var downloadButtonCode = '<a class="button button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-row-id="' + i + '"><i class="fa fa-cloud"></i> Download</a> '
+    var downloadButtonCode = '<a class="button button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-cloud"></i> Download</a> '
     table.row.add ([udsDatabase[i][0], udsDatabase[i][1],udsDatabase[i][2],downloadButtonCode]);
   }
   table.draw();
    $(".button-download").click(function() {
     var fileID = $(this).data("file-id");
-    var filename = $(this).data("file-name");;
-    var contentType = $(this).data("content-type");;
-   
-    google.script.run.withSuccessHandler(reassembleSuccess).withUserObject(filename, contentType).reassemble(fileID);
+    var filename = $(this).data("file-name");
+    var contentType = $(this).data("content-type");
+    var parts = $(this).data("parts");
+    google.script.run.withSuccessHandler(reassembleSuccess).withUserObject(filename, contentType).reassemble(fileID, parts);
   });
   
   //Make sure everythings the right colour
@@ -55,7 +55,6 @@ function updateFiles(udsDatabase){
     if (filesPicked.length != 0){
        $("#uploadButton").hide();
        $(".spinner").css("display", "inline-block");
-       alert(filesPicked[0].size);
        file = filesPicked[0];
        reader.readAsDataURL(file);
     }
@@ -76,7 +75,7 @@ function updateFiles(udsDatabase){
 
   
   function reassembleSuccess(input, filename, contentType) {
-   download(input, filename, contentType)
+   download(input, filename, contentType);
   }
   
   
