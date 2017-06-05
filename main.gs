@@ -4,13 +4,15 @@ var udsDatabaseName = "udsDatabase";
 // Create the page
 function doGet(e) {
   
+      
   var firstTime = setup(); //Run the setup (checks if the directories / db exists). If true, its the user's first time and we should probs show a welcome message.
   
   //Return the html service
   return HtmlService
-   .createTemplateFromFile('home')
+   .createTemplateFromFile((firstTime ? 'welcome' : 'home'))
    .evaluate()
-   .setTitle('Unlimited Drive Storage');
+   .setTitle('Unlimited Drive Storage')
+   .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);;
   
 }
 

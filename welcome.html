@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.css" />
+     <?!= include("style.css"); ?> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.js"> </script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			$('#fullpage').fullpage({
+				sectionsColor: ['#ffffff', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff'],
+				anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
+				scrollingSpeed: 1000
+			});
+		});
+	</script>
+  </head>
+  <body> 
+    <div id="fullpage">
+	<div class="section active" id="section0">
+		<img src="https://media3.giphy.com/media/yoJC2A59OCZHs1LXvW/giphy.gif" /> 
+        <img src=" https://media.giphy.com/media/l0Iyq2nHmN60pOV4A/giphy.gif" />
+        
+       
+	</div>
+	<div class="section" id="section1">
+       <h1> BUT WHY USE IT? </h1>
+       <img src="https://media.giphy.com/media/l4FGEjMrtACyizJ4c/giphy.gif" />
+       <img src="https://media2.giphy.com/media/N2JaONOG63aMM/giphy.gif" />
+       
+       
+	</div>
+    
+    <div class="section" id="section2">
+        <button onclick="reload();"> Let's Rock </button>
+	</div>
+    
+    <script>
+    function reload(){
+     window.location.replace("https://script.google.com/macros/s/AKfycbyYGn5tgMTTiQ__xuGT8fPKuB30xsKTCsUjkpqATubHkT_ez9ZS/exec");
+   
+    }
+    </script>
+
+</div>
+
+  </body>
+</html>
+
+
