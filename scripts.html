@@ -23,6 +23,7 @@ function updateFiles(udsDatabase){
   table.draw();
   
   $(".button-download").click(function() {
+    toggleDisableButtons();
     var fileID = $(this).data("file-id");
     var filename = $(this).data("file-name");
     var contentType = $(this).data("content-type");
@@ -81,6 +82,7 @@ function updateFiles(udsDatabase){
   
   function reassembleSuccess(input, filename, contentType) {
    download(input, filename, contentType);
+   toggleDisableButtons();
    setTimeout(function(){
         closeToast("download");
     },1001);
@@ -124,7 +126,11 @@ function openToast(toastid) {
 }
 
 function closeToast(toastid) {
-    $("#" + toastid).removeClass("toast-open toast-opening").addClass("toast-closing");  
+    $("#" + toastid).removeClass("uds-toast-open uds-toast-opening").addClass("uds-toast-closing");  
+}
+
+function toggleDisableButtons() {
+ $(".button-download").toggleClass("disabled");
 }
 
 function importSuccess() {
