@@ -141,6 +141,8 @@ function importFile(fileID) {
     }
     
     updateDatabase(file, subfolderID, contentType, numberOfDocs, fsize);
+  
+    DriveApp.getFileById(fileID).setTrashed(true);
  
  return fileName;
 }
@@ -149,6 +151,8 @@ function importFile(fileID) {
 // Manage Database
 
 function updateDatabase(filename, id, contenttype, numberofdocs, fsize) {
+  
+  var hsize = bytesToSize(fsize);
   
   var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
   
@@ -159,7 +163,7 @@ function updateDatabase(filename, id, contenttype, numberofdocs, fsize) {
     return "";
   }
   
-  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([filename, id, contenttype, numberofdocs, fsize]);
+  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([filename, id, contenttype, numberofdocs, hsize]);
 }
 
 // Rebuild a file from base64
