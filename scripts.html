@@ -29,7 +29,6 @@ function updateFiles(udsDatabase){
     var filename = $(this).data("file-name");
     var contentType = $(this).data("content-type");
     var parts = $(this).data("parts");
-    var toastid = $(this).data("toast");
     openToast("download");
     google.script.run.withSuccessHandler(reassembleSuccess).withUserObject(filename, contentType).reassemble(fileID, parts);
   });
@@ -47,12 +46,11 @@ function updateFiles(udsDatabase){
   // Upload the file to Google Drive
   reader.onloadend = function(e) {
    var fsize = $("#file")[0].files[0].size;
-   var passSize = (filesize(fsize, {round: 1}));
    
    google.script.run
       .withSuccessHandler(uploadSuccess)
       .upload(
-         e.target.result, file.name, passSize
+         e.target.result, file.name, fize
       );
   };
 
