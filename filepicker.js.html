@@ -48,7 +48,6 @@
             function createPicker(enabled) {
                 if (pickerApiLoaded && oauthToken) {
                     var view = new google.picker.View(google.picker.ViewId.DOCS);
-                    view.setMimeTypes("image/png,image/jpeg,image/jpg");
                     var picker = new google.picker.PickerBuilder()
                     .enableFeature(google.picker.Feature.NAV_HIDDEN)
                     .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
@@ -68,16 +67,13 @@
             function pickerCallback(data) {
                 if (data.action == google.picker.Action.PICKED) {
                     var fileId = data.docs[0].id;
-                    alert('The user selected: ' + fileId);
                     if (confirm("This will convert your file to UDS format, is that alright?") == true) {
+                     openToast("import");
                      google.script.run.withSuccessHandler(importSuccess).importFile(fileId);
                     } else {
                      return;
                     }
                 }
             }
-            
-            function importSuccess(input) {
-             alert(input);
-            }
+
     </script>

@@ -29,4 +29,100 @@ body, html {
 .spinner {
  display: none;
 }
+
+/* Buttons */
+.button-disabled {
+ pointer-events:none;
+}
+
+/* Toast */
+.toast {
+    min-width: 100px;
+    min-height: 15px;
+    background: #323232;
+    border-radius: 2px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    color: white;
+    padding: 16px;
+    position: fixed;
+    bottom: -100px;
+    left: 20px;
+}
+
+.toast > i {
+    margin-right: 8px;
+}
+
+.toast > a, .toast > a:hover, .toast > a:focus {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: darkorange;
+    margin-left: 8px;
+}
+
+.toast-opening {
+    animation: openToast 1s;
+}
+
+.toast-open {
+    bottom: 20px;
+}
+
+.toast-closing {
+    animation: closeToast 1s
+}
+
+@keyframes openToast {
+    from {bottom: -100px;}
+    to {bottom: 20px;}
+}
+
+@keyframes closeToast {
+    from {bottom: 20px;}
+    to {bottom: -100px;}
+}
+
+.toast-open-0 {
+    bottom: 40px;
+}
+
+@keyframes openToast-0 {
+    from {bottom: -100px;}
+    to {bottom: 40px;}
+}
+
+@keyframes closeToast-0 {
+    from {bottom: 40px;}
+    to {bottom: -100px;}
+}
+
+/* */
+.toast-open-1 {
+    bottom: 40px;
+}
+
+@keyframes openToast-1 {
+    from {bottom: -100px;}
+    to {bottom: 40px;}
+}
+
+@keyframes closeToast-1 {
+    from {bottom: 40px;}
+    to {bottom: -100px;}
+}
+
+/* If second modal is open */
+.toast-open-2 {
+    bottom: 40px;
+}
+
+@keyframes openToast-2 {
+    from {bottom: -100px;}
+    to {bottom: 40px;}
+}
+
+@keyframes closeToast-2 {
+    from {bottom: 40px;}
+    to {bottom: -100px;}
+}
 </style>

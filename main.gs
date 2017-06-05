@@ -50,7 +50,7 @@ function getDatabase() {
   return udsDatabase;
 }
 
-function upload(data, file) {
+function upload(data, file, fsize) {
   try {
     
     var dropbox = udsFolderName;
@@ -89,7 +89,7 @@ function upload(data, file) {
       DriveApp.removeFile(documentApp);
     }
     
-    updateDatabase(file, subfolderID, contentType, numberOfDocs);
+    updateDatabase(file, subfolderID, contentType, numberOfDocs, fsize);
     
     return "Success";
     
@@ -101,17 +101,54 @@ function upload(data, file) {
 // Convert an existing doc
 function importFile(fileID) {
  var file = DriveApp.getFileById(fileID);
+ var fsize = file.getSize();
  var blob = file.getBlob();
- var string = blob.isGoogleType();
+ var bytes = blob.getBytes();
+ var base64string = Utilities.base64Encode(blob.getBytes());
+ var contentType = blob.getContentType();
+ var fileName = file.getName();
   
+  var dropbox = udsFolderName;
+    var folder, folders = DriveApp.getFoldersByName(dropbox);
+    
+    if (folders.hasNext()) {
+      folder = folders.next();
+    } else {
+      folder = DriveApp.createFolder(dropbox);
+    }
+    var data = "data:" + contentType + ';base64,' + base64string;
+    
+    var subFolder = folder.createFolder(file);
+    var subfolderID = subFolder.getId();
+    
+    var maxCharacters = 1000000;
+    var numberOfDocs = Math.ceil(data.length / maxCharacters);
+    
+    var dataArray = new Array();
+    for (var i = 0; i < numberOfDocs; i ++) {
+      dataArray.push(data.substring(i * maxCharacters, (i + 1) * maxCharacters));
+    }
+    
+    //DocumentApp.create("log").getBody().editAsText().insertText(0, dataArray[0]);
+    for (i = 0; i < numberOfDocs; i++) { 
+      var document = DocumentApp.create(i);
+      var text = document.getBody().editAsText();
+      text.insertText(0, dataArray[i]);
+      var documentId = document.getId();
+      var documentApp = DriveApp.getFileById(documentId);
+      subFolder.addFile(documentApp);
+      DriveApp.removeFile(documentApp);
+    }
+    
+    updateDatabase(file, subfolderID, contentType, numberOfDocs, fsize);
  
- return string;
+ return fileName;
 }
 
 
 // Manage Database
 
-function updateDatabase(filename, id, contenttype, numberofdocs) {
+function updateDatabase(filename, id, contenttype, numberofdocs, fsize) {
   
   var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
   
@@ -122,7 +159,7 @@ function updateDatabase(filename, id, contenttype, numberofdocs) {
     return "";
   }
   
-  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([filename, id, contenttype, numberofdocs]);
+  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([filename, id, contenttype, numberofdocs, fsize]);
 }
 
 // Rebuild a file from base64
