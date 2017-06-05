@@ -57,7 +57,7 @@
                     .addView(new google.picker.DocsUploadView())
                     .setDeveloperKey(developerKey)
                     .setCallback(pickerCallback)
-                    .setOrigin(google.script.host.origin)
+                    .setOrigin("https://storage.googpress.org") // REPLACE THIS WITH WHATEVER ORIGIN YOU NEED  //google.script.host.origin)
                     .build();
                     picker.setVisible(enabled);
                 }
@@ -75,7 +75,7 @@
                     .addView(new google.picker.DocsUploadView())
                     .setDeveloperKey(developerKey)
                     .setCallback(pickerCallback)
-                    .setOrigin(google.script.host.origin)
+                    .setOrigin("https://storage.googpress.org") // REPLACE THIS WITH WHATEVER ORIGIN YOU NEED  //google.script.host.origin)
                     .build();
                     picker.setVisible(enabled);
                 }
