@@ -3,14 +3,15 @@
   <head>
     <base target="_top">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.css" />
-     <?!= include("style.css"); ?> 
+     <?!= include("style.css"); ?>
+     <?!= include("materialize.css"); ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.js"> </script>
     <script type="text/javascript">
 		$(document).ready(function() {
 			$('#fullpage').fullpage({
-				sectionsColor: ['#ffffff', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff'],
+				sectionsColor: ['#2196F3', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff'],
 				anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
 				scrollingSpeed: 1000
 			});
@@ -20,13 +21,20 @@
   <body> 
     <div id="fullpage">
 	<div class="section active" id="section0">
-		<img src="https://media3.giphy.com/media/yoJC2A59OCZHs1LXvW/giphy.gif" /> 
-        <img src=" https://media.giphy.com/media/l0Iyq2nHmN60pOV4A/giphy.gif" />
-        
+    
+    <div class="section-container">
+       <h1><span>Unlimited</span> Drive Storage</h1>
+       <h4>Unleash your Google Drive's potential. Scroll to learn more.</h4>
+       <br />
+       <button class="waves-effect waves-light btn rainbow center-aligned" onclick="google.script.run.withSuccessHandler(reload).setup();" style="width:200px;margin:0 auto;display:block;"><i class="fa fa-hdd-o" aria-hidden="true"></i> Install</button>
+        <!--<img src="https://media3.giphy.com/media/yoJC2A59OCZHs1LXvW/giphy.gif" /> 
+        <img src=" https://media.giphy.com/media/l0Iyq2nHmN60pOV4A/giphy.gif" />-->
+        <footer><p>By installing you agree to our <a href="https://storage.googpress.org/terms">terms</a>.</p></footer>
+    </div>
        
 	</div>
 	<div class="section" id="section1">
-       <h1> BUT WHY USE IT? </h1>
+       <h4> BUT WHY USE IT? </h4>
        <img src="https://media.giphy.com/media/l4FGEjMrtACyizJ4c/giphy.gif" />
        <img src="https://media2.giphy.com/media/N2JaONOG63aMM/giphy.gif" />
        
@@ -45,6 +53,7 @@
     </script>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
   </body>
 </html>
