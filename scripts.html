@@ -3,11 +3,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
 <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+<script src="//cdn.datatables.net/plug-ins/1.10.15/sorting/file-size.js"></script>
 
 <script>
 //DataTable Initialisation
 $(document).ready(function(){
-    $('#files-table').DataTable();
+    $('#files-table').DataTable({
+     paging: false,
+     columnDefs: [
+        { "type": "file-size", "targets": 1 }
+    ]  
+    });
 });
 
 google.script.run.withSuccessHandler(updateFiles).getDatabase();
@@ -17,8 +23,10 @@ function updateFiles(udsDatabase){
   table.clear();
   for (var i = 1; i < udsDatabase.length; i++){
     //this should work as long as no one screws with the ordering. Use this if things go wrong: https://datatables.net/reference/type/row-selector
-    var downloadButtonCode = '<a class="waves-effect waves-light btn button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-cloud"></i> Download</a> '
-    table.row.add ([udsDatabase[i][0], udsDatabase[i][4],udsDatabase[i][2],downloadButtonCode]);
+    var downloadButtonCode = '<a class="waves-effect waves-light btn light-blue button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-cloud-download"></i></a> '
+    var restoreButtonCode = '<a class="waves-effect waves-light btn orange darken-2 button-restore" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-repeat"></i></a> '
+    var deleteButtonCode = '<a class="waves-effect waves-light btn red darken-2 button-delete" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-trash"></i></a> '
+    table.row.add ([udsDatabase[i][0], udsDatabase[i][4],udsDatabase[i][2],downloadButtonCode,restoreButtonCode,deleteButtonCode]);
   }
   table.draw();
   

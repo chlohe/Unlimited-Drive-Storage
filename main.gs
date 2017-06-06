@@ -5,15 +5,37 @@ var udsDatabaseName = "udsDatabase";
 function doGet(e) {
   
       
-  var firstTime = setup(); //Run the setup (checks if the directories / db exists). If true, its the user's first time and we should probs show a welcome message.
+  var firstTime = checkIfFirstTime(); //Run the setup (checks if the directories / db exists). If true, its the user's first time and we should probs show a welcome message.
   
   //Return the html service
   return HtmlService
    .createTemplateFromFile((firstTime ? 'welcome' : 'home'))
+   //.createTemplateFromFile("welcome")
    .evaluate()
    .setTitle('Unlimited Drive Storage')
    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);;
   
+}
+
+function checkIfFirstTime() {
+  var firstTime = false; //Is it their first time?
+  
+  //The storage folder
+  var folder, folders = DriveApp.getFoldersByName(udsFolderName);
+  if (!folders.hasNext()){
+    firstTime = true;
+  }
+  else
+  {
+   folder = folders.next(); //This is required in case the folder exists but the db doesn't
+  }
+  
+  var sheet, file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the database iD
+  if (!files.hasNext()){
+    firstTime = true;
+  }
+  
+  return firstTime;
 }
 
 function setup(){
@@ -40,11 +62,11 @@ function setup(){
     sheet = SpreadsheetApp.create(udsDatabaseName);
     sheet.appendRow(["Name","Id","Type","Number of Docs", "Size"]);
     file = DriveApp.getFileById(sheet.getId());
-    file.makeCopy(udsDatabaseName,folder);
+    folder.addFile(file);
     DriveApp.removeFile(file);
   }
   
-  return firstTime;
+  return "Success";
   
 }
 

@@ -4,6 +4,7 @@
     <base target="_top">
     
     <?!= include("style.css"); ?>
+    <?!= include("materialize.css"); ?>
   </head>
   <body>
   <?!= include("filepicker.js"); ?>
@@ -16,9 +17,8 @@
       <button id="uploadButton" onclick="submitForm(); return false">Upload</button>
       <svg class='spinner' width='40px' height='40px' viewBox='0 0 66 66' xmlns='http://www.w3.org/2000/svg'><circle class='path' fill='none' stroke-width='6' stroke-linecap='round' cx='33' cy='33' r='30'></circle></svg>
       -->
-      <button onclick="createUploadPicker(true)">Upload a new file</button>
-      <hr />
-      <button onclick="createImportPicker(true)">Import from drive</button>
+      <button class="waves-effect waves-light btn orange darken-2" onclick="createUploadPicker(true)">Upload a new file</button>
+      <button class="waves-effect waves-light btn light-blue " onclick="createImportPicker(true)">Import from drive</button>
     </div>
   
     <div class="container">
@@ -31,12 +31,16 @@
     <th>Size</th>
     <th>Type</th>
     <th>Download</th>
+    <th>Restore</th>
+    <th>Delete</th>
   </tr>
   </thead>
     <tbody>
     
     <tr class="clickable-row">
     <td> Retrieving your files... </td>
+    <td>  </td>
+    <td>  </td>
     <td>  </td>
     <td>  </td>
     <td>  </td>
@@ -55,7 +59,7 @@
         <div class="uds-toast" id="import">
             <i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> Importing your file...
         </div>
-                
+        
     
     <?!= include("scripts"); ?>
     
