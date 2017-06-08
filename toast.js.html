@@ -1,0 +1,28 @@
+<script>
+function openToast(toastid) {
+                    var numOpenToasts = $('div.uds-toast-open').length + $('div.uds-toast-opening').length;
+                    var toastduration = 3000;
+                    var toastanimationlength = 1000 - 1;
+                    var toastid = "#" + toastid;
+                    var baseHeight = 20;
+
+                    //var toastheight = (baseHeight * (numOpenToasts + 1) + 100) + "px";
+
+                    /*if numOpenToasts > 0 {
+                    $('.uds-toast-open').addClass('toast-closing');
+                }*/
+
+                    $(toastid).removeClass("uds-toast-closing");
+                    $(toastid).addClass("uds-toast-opening");
+                    setTimeout(function(){
+                        $(toastid)./*css("bottom",toastheight)*/addClass("uds-toast-open").removeClass("uds-toast-opening");
+                        /*setTimeout(function(){
+            $(toastid).removeClass("toast-open").addClass("toast-closing");         
+        },toastduration);    */        
+                    },toastanimationlength);
+                }
+
+                function closeToast(toastid) {
+                    $("#" + toastid).removeClass("uds-toast-open uds-toast-opening").addClass("uds-toast-closing");  
+                }
+</script>
