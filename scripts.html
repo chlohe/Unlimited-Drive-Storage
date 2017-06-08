@@ -32,8 +32,11 @@ function updateFiles(udsDatabase){
   }
   table.draw();
   
+  /* ACTION BUTTONS */
+  
+  // Download
   $(".button-download").click(function() {
-    toggleDisableButtons();
+    toggleDisableButtons("download");
     var fileID = $(this).data("file-id");
     var filename = $(this).data("file-name");
     var contentType = $(this).data("content-type");
@@ -42,12 +45,46 @@ function updateFiles(udsDatabase){
     google.script.run.withSuccessHandler(reassembleSuccess).withUserObject(filename, contentType).reassemble(fileID, parts);
   });
   
-  //Make sure everythings the right colour
-
+  // Share
+  $(".button-share").click(function() {
+    toggleDisableButtons("share");
+    var fileID = $(this).data("file-id");
+    var filename = $(this).data("file-name");
+    var contentType = $(this).data("content-type");
+    var parts = $(this).data("parts");
+    openToast("share");
+    google.script.run.withSuccessHandler(shareSuccess).withUserObject(filename, contentType).share(fileID, parts);
+  });
+  
+  // Restore
+  $(".button-restore").click(function() {
+    toggleDisableButtons("restore");
+    var fileID = $(this).data("file-id");
+    var filename = $(this).data("file-name");
+    var contentType = $(this).data("content-type");
+    var parts = $(this).data("parts");
+    openToast("restore");
+    google.script.run.withSuccessHandler(restoreSuccess).restore(fileID, contentType, filename, parts);
+  }); 
+  
+  // Delete
+  $(".button-delete").click(function() {
+    
+    if (confirm("This will delete your file. Is that ok?") == true) {
+     toggleDisableButtons("delete");
+     var fileID = $(this).data("file-id");
+     var filename = $(this).data("file-name");
+     var contentType = $(this).data("content-type");
+     var parts = $(this).data("parts");
+     openToast("delete");
+     google.script.run.withSuccessHandler(deleteSuccess).deleteFile(fileID);
+    } else { return }
+  });
+  
 }
 
 
-// UPLOAD
+/* UPLOAD */
 
  var file, 
       reader = new FileReader();
@@ -67,7 +104,7 @@ function updateFiles(udsDatabase){
   function submitForm() {
     var filesPicked = $('#file')[0].files;
     //Make sure that something is indeed selected
-    if (filesPicked.length != 0){
+    if (filesPicked != 0){
        $("#uploadButton").hide();
        $(".spinner").css("display", "inline-block");
        file = filesPicked[0];
@@ -87,16 +124,25 @@ function updateFiles(udsDatabase){
    google.script.run.withSuccessHandler(updateFiles).getDatabase();
   }
   
-
-
+/* Download */
   
   function reassembleSuccess(input, filename, contentType) {
    download(input, filename, contentType);
-   toggleDisableButtons();
+   toggleDisableButtons("download");
    setTimeout(function(){
         closeToast("download");
     },1001);
   }
+  
+/* Delete */
+  function deleteSuccess() {
+   download(input, filename, contentType);
+   toggleDisableButtons("download");
+   setTimeout(function(){
+        closeToast("download");
+    },1001);
+  }
+  
   
 $(".button").click(function(){
 
@@ -139,18 +185,29 @@ function closeToast(toastid) {
     $("#" + toastid).removeClass("uds-toast-open uds-toast-opening").addClass("uds-toast-closing");  
 }
 
-function toggleDisableButtons() {
- $(".button-download").toggleClass("disabled");
+function toggleDisableButtons(type) {
+ $(".button-" + type).toggleClass("disabled");
 }
 
 function importSuccess() {
  setTimeout(function(){
         closeToast("import");
     },1001);
-
  google.script.run.withSuccessHandler(updateFiles).getDatabase();
 }
 
+function deleteSuccess() {
+ setTimeout(function(){
+        closeToast("delete");
+    },1001);
+    google.script.run.withSuccessHandler(updateFiles).getDatabase();
+}
 
+function restoreSuccess() {
+ setTimeout(function(){
+        closeToast("restore");
+    },1001);
+    google.script.run.withSuccessHandler(updateFiles).getDatabase();
+}
 
 </script>

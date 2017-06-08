@@ -39,32 +39,15 @@ function checkIfFirstTime() {
 }
 
 function setup(){
- 
-  //Check if the required directories/files exist. If not, make them!
-  
-  var firstTime = false; //Is it their first time?
-  
+     
   //The storage folder
-  var folder, folders = DriveApp.getFoldersByName(udsFolderName);
-  if (!folders.hasNext()){
-    firstTime = true;
-    folder = DriveApp.createFolder(udsFolderName); 
-  }
-  else
-  {
-   folder = folders.next(); //This is required in case the folder exists but the db doesn't
-  }
+  var folder = DriveApp.createFolder(udsFolderName); 
   
-  //The database
-  var sheet, file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the database iD
-  if (!files.hasNext()){
-    firstTime = true;
     sheet = SpreadsheetApp.create(udsDatabaseName);
     sheet.appendRow(["Name","Id","Type","Number of Docs", "Size"]);
     file = DriveApp.getFileById(sheet.getId());
     folder.addFile(file);
     DriveApp.removeFile(file);
-  }
    
   return "Success";
   
@@ -74,24 +57,6 @@ function setup(){
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename)
     .getContent();
-}
-
-function initialSetup(folderName) {
-  
-  PropertiesService.getScriptProperties().setProperty('FOLDER_NAME', folderName);
-  
-  /*var folder, folders = DriveApp.getFoldersByName(udsFolder);
- 
-  if (folders.hasNext()) { // Checking to see if dropbox exists already.
-    folder = folders.next();
-  } else {
-    folder = DriveApp.createFolder(dropbox);
-  }*/
-  
-  var folderName2 = PropertiesService.getScriptProperties().getProperty('FOLDER_NAME');
-  
-  return folderName2;
-  
 }
 
 function getDatabase() {
@@ -237,6 +202,57 @@ function reassemble(subfolderID, numberOfDocs) {
     var partId = folder.getFilesByName(i).next().getId();
     fileText += DocumentApp.openById(partId).getBody().getText();
   }
-  
-  return fileText;
+   return fileText;
 }
+  
+// Restore a file to drive
+function restoreFile(id, contenttype, filename, parts) {
+   
+   var fileText = reassemble(id, parts);
+    
+   // Remove row
+    var database = SpreadsheetApp.openById(file.getId()).getActiveSheet();
+    
+    var rows = database.getDataRange();
+    var numRows = rows.getNumRows();
+    var values = rows.getValues();
+
+    var rowsDeleted = 0;
+    for (var i = 0; i <= numRows - 1; i++) {
+      var row = values[i];
+      if (row[1] == id) {
+        database.deleteRow((parseInt(i)+1) - rowsDeleted);
+        rowsDeleted++;
+      }
+    }
+  }
+// Delete a file
+
+  
+  function deleteFile(id) {
+    DriveApp.getFileById(id).setTrashed(true);
+    
+       var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
+  
+        //Check if the doc exists. If it doesn't, return nothing
+       if (files.hasNext ()){
+         file = files.next(); 
+        } else {
+           return "";
+        }
+    
+         var database = SpreadsheetApp.openById(file.getId()).getActiveSheet();
+    
+    var rows = database.getDataRange();
+    var numRows = rows.getNumRows();
+    var values = rows.getValues();
+
+    var rowsDeleted = 0;
+    for (var i = 0; i <= numRows - 1; i++) {
+      var row = values[i];
+      if (row[1] == id) {
+        database.deleteRow((parseInt(i)+1) - rowsDeleted);
+        rowsDeleted++;
+      }
+    }
+  }
