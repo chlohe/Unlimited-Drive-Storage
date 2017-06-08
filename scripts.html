@@ -2,7 +2,7 @@
 <script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
-<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
 <script src="//cdn.datatables.net/plug-ins/1.10.15/sorting/file-size.js"></script>
 
 <script>
@@ -11,7 +11,8 @@ $(document).ready(function(){
     $('#files-table').DataTable({
      paging: false,
      columnDefs: [
-        { "type": "file-size", "targets": 1 }
+        { "type": "file-size", "targets": 1 },
+        { "width": "5%", "targets": [3,4,5,6] }
     ]  
     });
 });
@@ -26,7 +27,8 @@ function updateFiles(udsDatabase){
     var downloadButtonCode = '<a class="waves-effect waves-light btn light-blue button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-cloud-download"></i></a> '
     var restoreButtonCode = '<a class="waves-effect waves-light btn orange darken-2 button-restore" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-repeat"></i></a> '
     var deleteButtonCode = '<a class="waves-effect waves-light btn red darken-2 button-delete" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-trash"></i></a> '
-    table.row.add ([udsDatabase[i][0], udsDatabase[i][4],udsDatabase[i][2],downloadButtonCode,restoreButtonCode,deleteButtonCode]);
+    var shareButtonCode = '<a class="waves-effect waves-light btn green darken-2 button-share" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-share-alt"></i></a> '
+    table.row.add ([udsDatabase[i][0], udsDatabase[i][4],udsDatabase[i][2],downloadButtonCode,shareButtonCode,restoreButtonCode,deleteButtonCode]);
   }
   table.draw();
   

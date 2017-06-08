@@ -60,7 +60,7 @@
                     .setOrigin("https://storage.googpress.org") // REPLACE THIS WITH WHATEVER ORIGIN YOU NEED  //google.script.host.origin)
                     .build();
                     picker.setVisible(enabled);
-                }
+                } else {loadPicker();}
             }
             
              function createUploadPicker(enabled) {
@@ -78,7 +78,7 @@
                     .setOrigin("https://storage.googpress.org") // REPLACE THIS WITH WHATEVER ORIGIN YOU NEED  //google.script.host.origin)
                     .build();
                     picker.setVisible(enabled);
-                }
+                } else {loadPicker();}
             }
 
             // A simple callback implementation.

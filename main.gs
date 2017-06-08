@@ -65,7 +65,7 @@ function setup(){
     folder.addFile(file);
     DriveApp.removeFile(file);
   }
-  
+   
   return "Success";
   
 }

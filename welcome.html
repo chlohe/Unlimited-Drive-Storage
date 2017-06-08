@@ -20,40 +20,88 @@
   </head>
   <body> 
     <div id="fullpage">
-	<div class="section active" id="section0">
-    
-    <div class="section-container">
-       <h1><span>Unlimited</span> Drive Storage</h1>
-       <h4>Unleash your Google Drive's potential. Scroll to learn more.</h4>
-       <br />
-       <button class="waves-effect waves-light btn rainbow center-aligned" onclick="google.script.run.withSuccessHandler(reload).setup();" style="width:200px;margin:0 auto;display:block;"><i class="fa fa-hdd-o" aria-hidden="true"></i> Install</button>
-        <!--<img src="https://media3.giphy.com/media/yoJC2A59OCZHs1LXvW/giphy.gif" /> 
-        <img src=" https://media.giphy.com/media/l0Iyq2nHmN60pOV4A/giphy.gif" />-->
-        <footer><p>By installing you agree to our <a href="https://storage.googpress.org/terms">terms</a>.</p></footer>
-    </div>
-       
-	</div>
-	<div class="section" id="section1">
-       <h4> BUT WHY USE IT? </h4>
-       <img src="https://media.giphy.com/media/l4FGEjMrtACyizJ4c/giphy.gif" />
-       <img src="https://media2.giphy.com/media/N2JaONOG63aMM/giphy.gif" />
-       
-       
-	</div>
-    
-    <div class="section" id="section2">
-        <button onclick="reload();"> Let's Rock </button>
-	</div>
-    
-    <script>
-    function reload(){
-     window.location.replace("https://script.google.com/macros/s/AKfycbyYGn5tgMTTiQ__xuGT8fPKuB30xsKTCsUjkpqATubHkT_ez9ZS/exec");
-   
-    }
-    </script>
+            <div class="section active" id="section0">
 
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+                <div class="section-container">
+                    <h1><span>Unlimited</span> Drive Storage</h1>
+                    <h4>Unleash your Google Drive's potential. Scroll to learn more.</h4>
+                    <br />
+                    <button class="waves-effect waves-light btn rainbow center-aligned" onclick="install();" style="width:200px;margin:0 auto;display:block;"><i class="fa fa-hdd-o" aria-hidden="true"></i> Install</button>
+                    <!--<img src="https://media3.giphy.com/media/yoJC2A59OCZHs1LXvW/giphy.gif" /> 
+<img src=" https://media.giphy.com/media/l0Iyq2nHmN60pOV4A/giphy.gif" />-->
+                    <footer><p>By installing you agree to our <a href="https://storage.googpress.org/terms" target="_blank">terms</a>.</p></footer>
+                </div>
+
+            </div>
+            <div class="section" id="section1">
+                <div class="section-container">                
+                
+                    <div class="row black-text">
+                        <div class="col s12 m6">
+                            <div class="card large">
+                                <div class="card-image">
+                                    <img src="https://storage.googpress.org/select.png">
+                                   
+                                </div>
+                                <div class="card-content">
+                                 <span class="card-title">Upload</span>
+                                    <p>Upload as many files as you want <b>without</b> counting against your Google Drive quota!
+                                    From your computer or Google Drive, as GoogPress scales up to millions of files for a single user.
+                                    Currently you can upload files up to around 30MB, with larger ones coming soon.</p>
+                                </div>
+                                <div class="card-action">
+                                <a href="https://storage.googpress.org/docs/upload"><i class="fa fa-external-link"></i>   View Docs</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col s12 m6">
+                            <div class="card large">
+                                <div class="card-image">
+                                    <img src="https://storage.googpress.org/explorer.png">
+                                    
+                                </div>
+                                <div class="card-content">
+                                <span class="card-title black-text">Manage</span>
+                                    <p>Control all your stored files as a simple interface. With options to download, share, restore and delete you're always in control. </p>
+                                </div>
+                                <div class="card-action">
+                                <a href="https://storage.googpress.org/docs/manage"><i class="fa fa-external-link"></i>   View Docs</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!--<div class="section" id="section2">
+                <button onclick="reload();"> Let's Rock </button>
+            </div>-->
+
+            <script>
+                function reload(){
+                    window.location.replace("https://script.google.com/macros/s/AKfycbyYGn5tgMTTiQ__xuGT8fPKuB30xsKTCsUjkpqATubHkT_ez9ZS/exec");
+
+                }
+
+                function install() {
+                    openToast("install");
+                    $(".btn").removeClass("rainbow").addClass("disabled");
+                    google.script.run.withSuccessHandler(reload).setup();
+                }
+            </script>
+            
+            <?!= include("toast.js"); ?>
+
+        </div>
+
+         <div class="uds-toast" id="install">
+            <i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> Installing UDS...
+        </div>
+        
 
   </body>
 </html>
