@@ -193,7 +193,7 @@ function updateDatabase(filename, id, contenttype, numberofdocs, fsize) {
 
 function reassemble(subfolderID, numberOfDocs) {
   
-  // Reassemble should work for any time of file stored inside the database.
+  // Reassemble should work for any type of file stored inside the database.
   var folder = DriveApp.getFolderById(subfolderID);
   var fileText = "";
   
@@ -206,11 +206,25 @@ function reassemble(subfolderID, numberOfDocs) {
 }
   
 // Restore a file to drive
-function restoreFile(id, contenttype, filename, parts) {
+function restoreFile(id, contentType, filename, parts) {
    
+   // Get base64 string
    var fileText = reassemble(id, parts);
-    
+   
+   // Insert base64 to file
+   var blob = Utilities.newBlob(fileText, contentType, filename);
+   DriveApp.createFile(blob);
+  
    // Remove row
+  var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
+  
+  //Check if the doc exists. If it doesn't, return nothing
+  if (files.hasNext ()){
+   file = files.next(); 
+  } else {
+    return "";
+  }
+  
     var database = SpreadsheetApp.openById(file.getId()).getActiveSheet();
     
     var rows = database.getDataRange();
@@ -221,7 +235,7 @@ function restoreFile(id, contenttype, filename, parts) {
     for (var i = 0; i <= numRows - 1; i++) {
       var row = values[i];
       if (row[1] == id) {
-        database.deleteRow((parseInt(i)+1) - rowsDeleted);
+        //database.deleteRow((parseInt(i)+1) - rowsDeleted); Disabled delete for now
         rowsDeleted++;
       }
     }

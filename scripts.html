@@ -64,7 +64,7 @@ function updateFiles(udsDatabase){
     var contentType = $(this).data("content-type");
     var parts = $(this).data("parts");
     openToast("restore");
-    google.script.run.withSuccessHandler(restoreSuccess).restore(fileID, contentType, filename, parts);
+    google.script.run.withSuccessHandler(restoreSuccess).restoreFile(fileID, contentType, filename, parts);
   }); 
   
   // Delete
