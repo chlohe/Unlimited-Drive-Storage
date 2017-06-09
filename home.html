@@ -17,8 +17,9 @@
       <button id="uploadButton" onclick="submitForm(); return false">Upload</button>
       <svg class='spinner' width='40px' height='40px' viewBox='0 0 66 66' xmlns='http://www.w3.org/2000/svg'><circle class='path' fill='none' stroke-width='6' stroke-linecap='round' cx='33' cy='33' r='30'></circle></svg>
       -->
-      <button class="waves-effect waves-light btn orange darken-2" onclick="createUploadPicker(true)">Upload a new file</button>
-      <button class="waves-effect waves-light btn light-blue " onclick="createImportPicker(true)">Import from drive</button>
+      <button class="waves-effect waves-light btn orange darken-2" onclick="createUploadPicker(true)"><i class="fa fa-hdd-o" aria-hidden="true"></i> Upload a new file</button>
+      <button class="waves-effect waves-light btn light-blue " onclick="createImportPicker(true)"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Import from drive</button>
+      <button class="waves-effect waves-light btn green" onclick="createKeyImport()"><i class="fa fa-key" aria-hidden="true"></i> Import with Key</button>
     </div>
   
     <div class="container">
@@ -73,7 +74,7 @@
         <div class="uds-toast" id="delete">
             <i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> Deleting your file...
         </div>
-        
+        <?!= include("modals"); ?>
     
     <?!= include("scripts"); ?>
     

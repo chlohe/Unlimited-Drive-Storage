@@ -1,0 +1,21 @@
+<div id="shareModal" class="modal">
+    <div class="modal-content">
+      <h4>Sharing</h4>
+      <p class="red-text">This will allow anyone with the key to import this file into their own UDS.</p>
+      <span></span>
+    </div>
+    <div class="modal-footer">
+      <a onclick="$('#shareModal').modal('close');$('#shareModal span').text('');" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+  
+  <div id="importKey" class="modal">
+    <div class="modal-content">
+      <h4>Import with Key</h4>
+    </div>
+    <div class="modal-footer">
+    <a onclick="importWithKey();" class="modal-action modal-close waves-effect waves-green btn-flat">Import</a>
+    <a onclick="$('#importModal').modal('close');" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+    </div>
+  </div>
+
