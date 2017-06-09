@@ -15,6 +15,8 @@ $(document).ready(function(){
         { "width": "5%", "targets": [3,4,5,6] }
     ]  
     });
+    
+    $('.modal').modal();
 });
 
 google.script.run.withSuccessHandler(updateFiles).getDatabase();
@@ -53,7 +55,8 @@ function updateFiles(udsDatabase){
     var contentType = $(this).data("content-type");
     var parts = $(this).data("parts");
     openToast("share");
-    google.script.run.withSuccessHandler(shareSuccess).withUserObject(filename, contentType).share(fileID, parts);
+    
+    google.script.run.withSuccessHandler(shareSuccess).shareFile(fileID, filename, contentType, parts);
   });
   
   // Restore
@@ -99,23 +102,6 @@ function updateFiles(udsDatabase){
          e.target.result, file.name, fize
       );
   };
-
-  // Read the file on form submit
-  function submitForm() {
-    var filesPicked = $('#file')[0].files;
-    //Make sure that something is indeed selected
-    if (filesPicked != 0){
-       $("#uploadButton").hide();
-       $(".spinner").css("display", "inline-block");
-       file = filesPicked[0];
-       
-       reader.readAsDataURL(file);
-    }
-    else
-    {
-       alert("You haven't selected anything");
-    }
-  }
   
   function uploadSuccess() {
    alert("success");
@@ -142,7 +128,15 @@ function updateFiles(udsDatabase){
         closeToast("download");
     },1001);
   }
-  
+/* Import with Key */
+function createKeyImport() {
+ $('#importKey').modal('open');
+}
+
+function importWithKey() {
+ 
+}
+/* ----- */
   
 $(".button").click(function(){
 
@@ -210,4 +204,12 @@ function restoreSuccess() {
     google.script.run.withSuccessHandler(updateFiles).getDatabase();
 }
 
+function shareSuccess(shareKey) {
+ setTimeout(function(){
+        closeToast("share");
+    },1001);
+    $('#shareModal span').text(shareKey);
+    $('#shareModal').modal('open');
+    google.script.run.withSuccessHandler(updateFiles).getDatabase();
+}
 </script>

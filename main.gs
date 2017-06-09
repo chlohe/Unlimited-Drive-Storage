@@ -270,3 +270,31 @@ function restoreFile(id, contentType, filename, parts) {
       }
     }
   }
+
+// Share a file
+
+  
+  function shareFile(id, fileName, contentType, parts) {    
+    var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
+    
+    DriveApp.getFileById(id).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    
+    var shareKey = id + "?filename=" + fileName + "&type=" + contentType + "&parts=" + parts;
+    
+    return shareKey;
+    // Manage DB
+    var database = SpreadsheetApp.openById(file.getId()).getActiveSheet();
+    
+    var rows = database.getDataRange();
+    var numRows = rows.getNumRows();
+    var values = rows.getValues();
+
+    var rowsDeleted = 0;
+    for (var i = 0; i <= numRows - 1; i++) {
+      var row = values[i];
+      if (row[1] == id) {
+        database.deleteRow((parseInt(i)+1) - rowsDeleted);
+        rowsDeleted++;
+      }
+    }
+  }
