@@ -244,7 +244,24 @@ function restoreFile(id, contentType, filename, parts) {
 
   
   function deleteFile(id) {
-    DriveApp.getFileById(id).setTrashed(true);
+    var subFolder = DriveApp.getFolderById(id);
+    var isOwner = subFolder.getAccess(Session.getActiveUser());
+    if (isOwner = "DriveApp.Permission.VIEW") {
+      var folder, folders = DriveApp.getFoldersByName(udsFolderName);
+      
+      if (folders.hasNext()) {
+        folder = folders.next();
+      } else {
+        return;
+      }
+      
+      folder.removeFolder(subFolder)
+      
+    } else {
+      subFolder.setTrashed(true);
+    }
+    
+    
     
        var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
   
@@ -274,27 +291,38 @@ function restoreFile(id, contentType, filename, parts) {
 // Share a file
 
   
-  function shareFile(id, fileName, contentType, parts) {    
+  function shareFile(id, fileName, contentType, parts, size) {    
     var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
     
-    DriveApp.getFileById(id).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    DriveApp.getFolderById(id).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     
-    var shareKey = id + "?filename=" + fileName + "&type=" + contentType + "&parts=" + parts;
+    var shareKey = id + "?filename=" + fileName + "?type=" + contentType + "?parts=" + parts + "?size=" + size;
     
     return shareKey;
-    // Manage DB
-    var database = SpreadsheetApp.openById(file.getId()).getActiveSheet();
-    
-    var rows = database.getDataRange();
-    var numRows = rows.getNumRows();
-    var values = rows.getValues();
-
-    var rowsDeleted = 0;
-    for (var i = 0; i <= numRows - 1; i++) {
-      var row = values[i];
-      if (row[1] == id) {
-        database.deleteRow((parseInt(i)+1) - rowsDeleted);
-        rowsDeleted++;
-      }
-    }
+   
   }
+
+// Import using a key
+
+function importWithKey(id, fileName, contentType, parts, size) {
+  var folder, folders = DriveApp.getFoldersByName(udsFolderName);
+  if (folders.hasNext()) {
+      folder = folders.next();
+    } else {
+      return;
+    }
+  var subFolder = DriveApp.getFolderById(id);
+  
+  folder.addFolder(subFolder);
+  
+  // Manage Database
+  var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
+  if (files.hasNext ()){
+   file = files.next(); 
+  } else {
+    return "";
+  }
+  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([fileName, id, contentType, parts, size]);
+  
+  return "Success";
+}

@@ -12,10 +12,15 @@
   <div id="importKey" class="modal">
     <div class="modal-content">
       <h4>Import with Key</h4>
+      <br />
+      <div class="input-field">
+          <input type="text" placeholder="1LlphxB3bdpFFMZHuKS48yVcgfhHjXbg4geZCgyysc1o?filename=Example?type=image/jpeg?parts=3?size=123124" id="key"/>
+          <label for="key">Key</label>
+        </div>      
     </div>
     <div class="modal-footer">
-    <a onclick="importWithKey();" class="modal-action modal-close waves-effect waves-green btn-flat">Import</a>
-    <a onclick="$('#importModal').modal('close');" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+    <a class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+    <a onclick="importWithKey();" class="modal-action waves-effect waves-green btn-flat">Import</a>
     </div>
   </div>
 
