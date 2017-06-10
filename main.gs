@@ -313,16 +313,24 @@ function importWithKey(id, fileName, contentType, parts, size) {
     }
   var subFolder = DriveApp.getFolderById(id);
   
-  folder.addFolder(subFolder);
   
-  // Manage Database
-  var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
-  if (files.hasNext ()){
-   file = files.next(); 
-  } else {
-    return "";
-  }
-  SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([fileName, id, contentType, parts, size]);
+  
+  var target, targets = folder.getFoldersByName(subFolder);
+     if (targets.hasNext()) {
+      return "Already exists";
+    } else {
+      folder.addFolder(subFolder);
+      // Manage Database
+      var file, files = DriveApp.getFilesByName(udsDatabaseName); //Retrieve the ID
+      if (files.hasNext ()){
+        file = files.next(); 
+      } else {
+        return "";
+      }
+      SpreadsheetApp.openById(file.getId()).getActiveSheet().appendRow([fileName, id, contentType, parts, size]);
+    }
+  
+  
   
   return "Success";
 }
