@@ -29,7 +29,7 @@ function updateFiles(udsDatabase){
     var downloadButtonCode = '<a class="waves-effect waves-light btn light-blue button-download" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-cloud-download"></i></a> '
     var restoreButtonCode = '<a class="waves-effect waves-light btn orange darken-2 button-restore" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-repeat"></i></a> '
     var deleteButtonCode = '<a class="waves-effect waves-light btn red darken-2 button-delete" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-trash"></i></a> '
-    var shareButtonCode = '<a class="waves-effect waves-light btn green darken-2 button-share" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '"><i class="fa fa-share-alt"></i></a> '
+    var shareButtonCode = '<a class="waves-effect waves-light btn green darken-2 button-share" data-file-id="' + udsDatabase[i][1] + '" data-content-type="' + udsDatabase[i][2] + '" data-file-name="' + udsDatabase[i][0] + '" data-parts="' + udsDatabase[i][3] + '" data-row-id="' + i + '" data-size="' + udsDatabase[i][4] + '"><i class="fa fa-share-alt"></i></a> '
     table.row.add ([udsDatabase[i][0], udsDatabase[i][4],udsDatabase[i][2],downloadButtonCode,shareButtonCode,restoreButtonCode,deleteButtonCode]);
   }
   table.draw();
@@ -54,9 +54,10 @@ function updateFiles(udsDatabase){
     var filename = $(this).data("file-name");
     var contentType = $(this).data("content-type");
     var parts = $(this).data("parts");
+    var size = $(this).data("size");
     openToast("share");
     
-    google.script.run.withSuccessHandler(shareSuccess).shareFile(fileID, filename, contentType, parts);
+    google.script.run.withSuccessHandler(shareSuccess).shareFile(fileID, filename, contentType, parts, size);
   });
   
   // Restore
@@ -135,22 +136,27 @@ function createKeyImport() {
 
 function importWithKey() {
  
+ var key = $("#key").val();
+ if (key.includes("?filename=") === true) {
+   openToast("import");
+   $('#importKey').modal('close');
+   var bits = key.split("?");
+   
+   var id = bits[0];
+   var fileName = bits[1].substr(9);
+   var contentType = bits[2].substr(5);
+   var parts = bits[3].substr(6);
+   var size = bits[4].substr(5);
+   google.script.run.withSuccessHandler(importWithKeySuccess).importWithKey(id, fileName, contentType, parts, size);
+   
+ } else {alert("Incorrent Key");}
+}
+
+function importWithKeySuccess(input) {
+ closeToast("import");
+ google.script.run.withSuccessHandler(updateFiles).getDatabase();
 }
 /* ----- */
-  
-$(".button").click(function(){
-
-    var toastid = $(this).attr('data-toast');
-
-    if (typeof toastid !== typeof undefined && toastid !== false) {
-        if ($(".uds-toast").hasClass("toast-open")) {
-            toast(toastid);
-        }
-        else {
-            toast(toastid);
-        }
-    }
-});
 
 function openToast(toastid) {
     var numOpenToasts = $('div.uds-toast-open').length + $('div.uds-toast-opening').length;
