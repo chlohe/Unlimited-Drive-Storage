@@ -9,6 +9,7 @@
 //DataTable Initialisation
 $(document).ready(function(){
     $('#files-table').DataTable({
+     scrollX: true,
      paging: false,
      columnDefs: [
         { "type": "file-size", "targets": 1 },
@@ -140,6 +141,7 @@ function importWithKey() {
  if (key.includes("?filename=") === true) {
    openToast("import");
    $('#importKey').modal('close');
+   $('#shareModal span').text('');
    var bits = key.split("?");
    
    var id = bits[0];
