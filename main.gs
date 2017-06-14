@@ -241,7 +241,7 @@ function restoreFile(id, contentType, filename, parts) {
       }
     }
   }
-// Delete a file
+/* Delete a file */
 
   
   function deleteFile(id) {
