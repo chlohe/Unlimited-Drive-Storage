@@ -210,9 +210,10 @@ function restoreFile(id, contentType, filename, parts) {
    
    // Get base64 string
    var fileText = reassemble(id, parts);
+   var bytes = Utilities.base64Decode(fileText.substr(fileText.indexOf('base64,')+7))
    
    // Insert base64 to file
-   var blob = Utilities.newBlob(fileText, contentType, filename);
+   var blob = Utilities.newBlob(bytes, contentType, filename);
    DriveApp.createFile(blob);
   
    // Remove row
