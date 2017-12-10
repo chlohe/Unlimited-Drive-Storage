@@ -35,3 +35,15 @@
     <a onclick="deleteFile();$('#shareModal span').text('');" class="modal-action waves-effect waves-green btn-flat">Delete</a>
     </div>
   </div>
+  
+<div id="confirmDelete" class="modal">
+    <div class="modal-content">
+      <h4>Import File</h4>
+      <br />
+      <p>You are about to import <span></span>. This will remove the file from your Drive </p>
+    </div>
+    <div class="modal-footer">
+    <a class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+    <a onclick="deleteFile();$('#confirmDelete span').text('');" class="modal-action waves-effect waves-green btn-flat">Import</a>
+   </div>
+</div>

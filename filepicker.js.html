@@ -85,12 +85,8 @@
             function pickerCallback(data) {
                 if (data.action == google.picker.Action.PICKED) {
                     var fileId = data.docs[0].id;
-                    if (confirm("This will convert your file to UDS format, is that alright?") == true) {
                      openToast("import");
                      google.script.run.withSuccessHandler(importSuccess).importFile(fileId);
-                    } else {
-                     return;
-                    }
                 }
             }
 
